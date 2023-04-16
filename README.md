@@ -1,3 +1,8 @@
+# TODO
+1. Repeat dataset sampling
+2. LR scheduler
+3. analsis code
+
 <div align="center">
 
 <img src="resources/mmpt-logo.png" width="600"/>
@@ -121,8 +126,10 @@ Please refer to [installation documentation](https://mmpretrain.readthedocs.io/e
 
 Below are quick steps for distributed training:
 ```shell
-python -m torch.distributed.run --nproc_per_node 2 --master_port 29500 tools/train.py --launcher pytorch configs/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k.py 
+python -m torch.distributed.run --nproc_per_node 2 --master_port 29500 tools/train.py --launcher pytorch configs/mocov2/mocov2_resnet50_1xb4096-coslr-200e_blood.py
+
 # You need to download the ImageNet dataset first in data/imagenet
+python -m torch.distributed.run --nproc_per_node 2 --master_port 29500 tools/train.py --launcher pytorch configs/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k.py 
 ```
 
 ## User Guides
