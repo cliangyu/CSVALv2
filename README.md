@@ -109,9 +109,10 @@ Below are quick steps for installation:
 ```shell
 conda install pytorch torchvision pytorch-cuda=11.7 -c pytorch -c nvidia
 pip install openmim
-git clone https://github.com/open-mmlab/mmpretrain.git
-cd mmpretrain
+git clone https://github.com/liangyuch/csvalv2
+cd csvalv2
 mim install -e .
+pip install tensorboard
 ```
 
 Please refer to [installation documentation](https://mmpretrain.readthedocs.io/en/latest/get_started.html) for more detailed installation and dataset preparation.
@@ -119,9 +120,9 @@ Please refer to [installation documentation](https://mmpretrain.readthedocs.io/e
 ## Quick Start
 
 Below are quick steps for distributed training:
-
 ```shell
 python -m torch.distributed.run --nproc_per_node 2 --master_port 29500 tools/train.py --launcher pytorch configs/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k.py 
+# You need to download the ImageNet dataset first in data/imagenet
 ```
 
 ## User Guides
