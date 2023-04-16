@@ -107,8 +107,7 @@ Please refer to [changelog](https://mmpretrain.readthedocs.io/en/latest/notes/ch
 Below are quick steps for installation:
 
 ```shell
-conda create -n open-mmlab python=3.8 pytorch==1.10.1 torchvision==0.11.2 cudatoolkit=11.3 -c pytorch -y
-conda activate open-mmlab
+conda install pytorch torchvision pytorch-cuda=11.7 -c pytorch -c nvidia
 pip install openmim
 git clone https://github.com/open-mmlab/mmpretrain.git
 cd mmpretrain
@@ -116,6 +115,14 @@ mim install -e .
 ```
 
 Please refer to [installation documentation](https://mmpretrain.readthedocs.io/en/latest/get_started.html) for more detailed installation and dataset preparation.
+
+## Quick Start
+
+Below are quick steps for distributed training:
+
+```shell
+python -m torch.distributed.run --nproc_per_node 2 --master_port 29500 tools/train.py --launcher pytorch configs/mocov2/mocov2_resnet50_8xb32-coslr-200e_in1k.py 
+```
 
 ## User Guides
 
