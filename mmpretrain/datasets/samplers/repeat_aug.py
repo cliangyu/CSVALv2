@@ -4,6 +4,7 @@ from typing import Iterator, Optional, Sized
 import torch
 from mmengine.dist import get_dist_info, is_main_process, sync_random_seed
 from torch.utils.data import Sampler
+from mmengine.dataset import DefaultSampler
 
 from mmpretrain.registry import DATA_SAMPLERS
 
@@ -99,3 +100,39 @@ class RepeatAugSampler(Sampler):
             epoch (int): Epoch number.
         """
         self.epoch = epoch
+
+
+@DATA_SAMPLERS.register_module()
+class RepeatSampler(DefaultSampler):
+    """Sampler that perturbs in each dataset for
+    repeat dataset.
+    """
+    def __iter__(self) -> Iterator[int]:
+        """Iterate the indices."""
+        # deterministically shuffle based on epoch and seed
+        if self.shuffle:
+            g = torch.Generator()
+            g.manual_seed(self.seed + self.epoch)
+            if hasattr(self.dataset, '_ori_len'):
+                # for repeat dataset
+                indices = []
+                for _ in range(self.dataset.times):
+                    _indices = torch.randperm(
+                        self.dataset._ori_len, generator=g).tolist()
+                    indices.extend(_indices)
+            else:
+                indices = torch.randperm(
+                    len(self.dataset), generator=g).tolist()
+        else:
+            indices = torch.arange(len(self.dataset)).tolist()
+
+        # add extra samples to make it evenly divisible
+        if self.round_up:
+            indices = (
+                indices *
+                int(self.total_size / len(indices) + 1))[:self.total_size]
+
+        # subsample
+        indices = indices[self.rank:self.total_size:self.world_size]
+
+        return iter(indices)
