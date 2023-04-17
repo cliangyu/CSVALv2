@@ -1,7 +1,5 @@
 # TODO
-1. Repeat dataset sampling
-2. LR scheduler
-3. analsis code
+- analysis code
 
 <div align="center">
 

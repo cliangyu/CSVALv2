@@ -39,14 +39,19 @@ train_pipeline = [
 # dataset summary
 
 train_dataloader = dict(
-    # batch_size=4096,
-    batch_size=64,
+    batch_size=4096,
+    # batch_size=64,
     num_workers=8,
     drop_last=True,
-    sampler=dict(type='RepeatAugSampler', num_repeats=N, shuffle=True),
+    # sampler=dict(type='RepeatAugSampler', num_repeats=N, shuffle=True),
+    sampler=dict(type='RepeatSampler', shuffle=True),
+    dataset=dict(
+        type='RepeatDataset',
+        times=N,
     dataset=dict(
             type=dataset_type,
             data_prefix='data/medmnist',
             split='train',
             pipeline=train_pipeline,
         ))
+)

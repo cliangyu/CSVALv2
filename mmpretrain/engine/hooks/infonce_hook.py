@@ -55,6 +55,7 @@ class InfoNCEHook(Hook):
                     ids = training_dynamics['idx']
                 else:
                     ids = np.repeat(training_dynamics['idx'], 2)  # for SimCLR
+                logger.info('ids: {}'.format(ids))
                 self.log_training_dynamics(
                     output_dir=runner.work_dir,
                     epoch=runner.epoch,
